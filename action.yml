@@ -1,0 +1,19 @@
+name: Trigger Pipeline
+description: Trigger a Plural Pipeline
+
+inputs:
+  url:
+    description: the url of your Plural Console instance
+    required: true
+  token:
+    description: the token to use to authenticate with Plural Console
+    required: true
+  pipeline:
+    description: the name of the pipeline to trigger
+    required: true
+  context:
+    description: the context to provide to the pipeline (JSON encoded)
+    required: true
+runs:
+  using: node20
+  main: index.js

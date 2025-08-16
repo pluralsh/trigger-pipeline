@@ -1,0 +1,51 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Test downloading plural
+        uses: ./
+        with:
+          config: ${{ secrets.PLURAL_CONF }}
+          vsn: '0.5.18'
+      - run: plural --help
+  test2:
+    name: Test later versions
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: setup plural
+        id: plural
+        uses: pluralsh/setup-plural@v1
+        with:
+          email: console@plural.sh
+          consoleUrl: https://console.plrldemo.onplural.sh
+      - name: Test trigger pipeline
+        uses: ./
+        with:
+          url: https://console.plrldemo.onplural.sh
+          token: ${{ steps.plural.outputs.consoleToken }}
+          pipeline: flow-test
+          context: |
+            {
+              "flow": "test-flow",
+              "tag": "0.1.2"
+            }
