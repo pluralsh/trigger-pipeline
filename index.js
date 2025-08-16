@@ -2,8 +2,8 @@ import * as core from "@actions/core";
 import * as path from "path";
 
 const gqlDoc = `
-mutation CreatePipelineContext($pipelineName: String!, $attributes: PipelineContextAttributes!) {
-  createPipelineContext(pipelineName: $pipelineName, attributes: $attributes) {
+mutation CreatePipelineContext($pipeline: String!, $attributes: PipelineContextAttributes!) {
+  createPipelineContext(pipelineName: $pipeline, attributes: $attributes) {
     id
     pipeline { id }
   }
